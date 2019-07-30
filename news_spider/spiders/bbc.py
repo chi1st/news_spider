@@ -9,7 +9,7 @@ from news_spider.items import NewsSpiderItem
 class BbcSpider(scrapy.Spider):
     name = 'bbc'
     allowed_domains = ['bbc.com']
-    start_urls = ['http://www.bbc.com/news/world/']
+    start_urls = ['https://www.bbc.com/news/world/']
 
     def parse(self, response):
         href = response.xpath('//*[contains(@class, gs-c-promo)]/@href')
