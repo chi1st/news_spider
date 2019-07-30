@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
-
 import re
+import time
 
 from news_spider.items import NewsSpiderItem
 
@@ -19,23 +19,25 @@ class CnnSpider(scrapy.Spider):
                 yield scrapy.Request(url, callback=self.parse_news)
 
     def parse_news(self, response):
+        url = response.url
         title = response.xpath('//article//h1/text()').extract_first()
-        post_time = response.xpath('//article//p[@class="update-time"]/text()').extract_first()
-        content = response.xpath('//*[@id="body-text"]//*[contains(@class, "zn-body__paragraph")]//text()')
+        post_time = response.xpath(
+            '//article//p[@class="update-time"]/text()').extract_first()
+        content = response.xpath(
+            '//*[@id="body-text"]//*[contains(@class, "zn-body__paragraph")]//text()'
+        )
         content = ' '.join(content.extract())
         item = NewsSpiderItem()
+        item['url'] = url
         item['title'] = title
-        item['post_time'] = post_time
+        item['report_time'] = post_time
         item['content'] = content
+        item['crawl_time'] = time.time()
         yield item
 
-    def get_pubtime_by_url(self, url):
-        m = re.search(r'(20\d{2})[/:-]([0-1]?\d)[/:-]([0-3]?\d)', url)
-        res = ' '.join(m.groups()) if m else None
-        return res
-
     def is_url_needed(self, url):
-        if url.endswith('.html'):
+        if url.endswith('.html') and re.search(
+                r'(20\d{2})[/:-]([0-1]?\d)[/:-]([0-3]?\d)', url):
             if self.get_pubtime_by_url(url):
                 return True
         else:
