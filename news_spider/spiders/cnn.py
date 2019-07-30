@@ -38,7 +38,6 @@ class CnnSpider(scrapy.Spider):
     def is_url_needed(self, url):
         if url.endswith('.html') and re.search(
                 r'(20\d{2})[/:-]([0-1]?\d)[/:-]([0-3]?\d)', url):
-            if self.get_pubtime_by_url(url):
-                return True
+            return True
         else:
             return False

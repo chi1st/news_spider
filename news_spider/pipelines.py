@@ -5,7 +5,9 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 
-from  scrapy import Item
+from scrapy import Item
+
+
 class NewsSpiderPipeline(object):
     def process_item(self, item, spider):
         return item
@@ -33,7 +35,7 @@ class MongoDBPipeline(object):
     def process_item(self, item, spider):
         collection = self.db[spider.name]
         if collection.find({'title': dict(item)['title']}).limit(1).count() > 0:
-            print('999999')
+            print('title {} has been saved'.format(item['title']))
         else:
             post = dict(item) if isinstance(item, Item) else item
             collection.insert_one(post)
