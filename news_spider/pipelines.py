@@ -32,11 +32,16 @@ class MongoDBPipeline(object):
     def close_spider(self, spider):
         self.client.close()
 
+    # def process_item(self, item, spider):
+    #     collection = self.db[spider.name]
+    #     if collection.find({'title': dict(item)['title']}).limit(1).count() > 0:
+    #         print('title {} has been saved'.format(item['title']))
+    #     else:
+    #         post = dict(item) if isinstance(item, Item) else item
+    #         collection.insert_one(post)
+    #     return item
+
     def process_item(self, item, spider):
         collection = self.db[spider.name]
-        if collection.find({'title': dict(item)['title']}).limit(1).count() > 0:
-            print('title {} has been saved'.format(item['title']))
-        else:
-            post = dict(item) if isinstance(item, Item) else item
-            collection.insert_one(post)
+        collection.update({'title': item['title']}, {'$set': dict(item)}, True)
         return item
