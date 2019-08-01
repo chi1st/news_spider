@@ -1,0 +1,8 @@
+{
+"server" : "d0.2simple.dev",
+"server_port" : 39037,
+"local_port" : 1080,
+"password" : "0044246067",
+"method" : "aes-256-cfb",
+"remarks" : ""
+}
