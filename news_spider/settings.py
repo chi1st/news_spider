@@ -89,5 +89,5 @@ ITEM_PIPELINES = {
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 
-MONGO_DB_URI = 'mongodb://localhost:32768'
+MONGO_DB_URI = 'mongodb://192.168.0.23:32768'
 MONGO_DB_NAME = 'scrapy_data'
